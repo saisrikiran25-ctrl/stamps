@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Micro Habit Dashboard — Three commitments. One screen. No excuses. Track 1–3 daily habits with streaks, analytics, and a precision-engineered interface." />
+  <meta name="theme-color" content="#0D0F12" />
+  <title>Micro — Habit Dashboard</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="./styles/base.css" />
+  <link rel="stylesheet" href="./styles/components.css" />
+  <link rel="stylesheet" href="./styles/animations.css" />
+
+  <!-- Preconnect for Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+<body>
+
+  <!-- App Shell -->
+  <div id="app-shell">
+
+    <!-- Desktop Top Navigation (hidden on onboarding) -->
+    <div id="nav" role="banner"></div>
+
+    <!-- SPA Content Container -->
+    <div id="app" role="main"></div>
+
+    <!-- Mobile Bottom Navigation (hidden on onboarding) -->
+    <div id="nav-mobile" role="navigation" aria-label="Mobile navigation"></div>
+
+  </div>
+
+  <!-- Heatmap tooltip (dynamically appended to body by ui.js) -->
+
+  <!-- ============================================================
+       Application Bootstrap
+       All modules use ES2022 native modules — no build step needed.
+       ============================================================ -->
+  <script type="module">
+    import Store from './scripts/store.js';
+    import { registerRoute, initRouter, navigate } from './scripts/router.js';
+    import { renderOnboarding } from './scripts/views/onboarding.js';
+    import { renderDashboard  } from './scripts/views/dashboard.js';
+    import { renderAnalytics  } from './scripts/views/analytics.js';
+    import { renderManage     } from './scripts/views/manage.js';
+
+    // ── Register all routes ─────────────────────────────────────
+    registerRoute('',            renderDashboard);
+    registerRoute('dashboard',   renderDashboard);
+    registerRoute('onboarding',  renderOnboarding);
+    registerRoute('analytics',   renderAnalytics);
+    registerRoute('manage',      renderManage);
+
+    // ── First-run redirect logic ────────────────────────────────
+    // If no habits exist and not already on onboarding → redirect.
+    // This runs before router initialization so the correct hash is set.
+    (function checkFirstRun() {
+      const habits = Store.getHabits();
+      const currentHash = window.location.hash.replace(/^#\/?/, '');
+      if (habits.length === 0 && currentHash !== 'onboarding') {
+        window.location.hash = '#/onboarding';
+      }
+    })();
+
+    // ── Initialize router ───────────────────────────────────────
+    const appContainer = document.getElementById('app');
+    initRouter(appContainer);
+  </script>
+
+</body>
+</html>
