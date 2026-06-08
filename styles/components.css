@@ -15,13 +15,20 @@
 }
 
 .nav-inner {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 var(--space-6);
+  max-width: 100%;        /* match the full-width #app */
+  margin: 0;
+  padding: 0 var(--space-10);
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  height: 52px;
+  height: 56px;
+}
+
+@media (min-width: 1600px) {
+  .nav-inner {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
 }
 
 .nav-logo {
@@ -336,9 +343,14 @@
   background-color: var(--bg-surface);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
-  padding: var(--space-5) var(--space-6);
+  padding: var(--space-6) var(--space-8);  /* more breathing room */
   position: relative;
   overflow: hidden;
+  /* Grow to fill available vertical space equally */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   transition:
     background-color var(--transition-med),
     box-shadow var(--transition-med),
@@ -1240,3 +1252,123 @@
   font-size: 0.933rem;
   box-shadow: 0 0 0 2px var(--accent-glow);
 }
+
+/* ============================================================
+   DESKTOP SCALE — Override sizes for wide PC viewports
+   Kicks in at 768px and larger. Makes dashboard feel like it
+   fills the screen rather than sitting in a narrow column.
+   ============================================================ */
+@media (min-width: 768px) {
+
+  /* Dashboard header — larger, more presence */
+  .dash-header {
+    padding: var(--space-5) var(--space-6);
+    margin-bottom: var(--space-5);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--bg-border);
+    background: var(--bg-surface);
+  }
+
+  .dash-header__left {
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+  }
+
+  .dash-header__date {
+    font-size: 1.067rem;
+    font-weight: 600;
+  }
+
+  .dash-header__daycount {
+    font-size: 0.8rem;
+  }
+
+  /* Streak dots — larger targets on desktop */
+  .streak-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .dash-header__right {
+    gap: 6px;
+  }
+
+  /* All-done banner — bigger celebration text */
+  .all-done-banner {
+    font-size: 1.6rem;
+    padding: var(--space-2) 0 var(--space-4);
+  }
+
+  /* Habit cards — bigger name, bigger indicator, more padding */
+  .habit-card__name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .habit-card__indicator {
+    font-size: 1.2rem;
+    width: 28px;
+  }
+
+  .habit-card__top {
+    min-height: 52px;
+  }
+
+  /* DONE button — bigger on desktop */
+  .done-btn {
+    padding: 10px 24px;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+  }
+
+  /* Habit meta (streak/best/bar) — larger labels */
+  .habit-meta {
+    gap: var(--space-8);
+    margin-top: var(--space-4);
+  }
+
+  .habit-meta__item {
+    font-size: 0.9rem;
+    gap: 7px;
+  }
+
+  .habit-meta__value {
+    font-size: 1.067rem;
+  }
+
+  /* Mini bar — larger squares */
+  .mini-bar__day {
+    width: 11px;
+    height: 11px;
+  }
+
+  .mini-bar {
+    gap: 4px;
+  }
+
+  /* Stats footer — well-spaced on desktop */
+  .stats-bar {
+    gap: var(--space-10);
+    padding: var(--space-5) var(--space-8);
+    justify-content: flex-start;
+  }
+
+  .stats-bar__item {
+    font-size: 0.933rem;
+  }
+
+  .stats-bar__value {
+    font-size: 1.2rem;
+  }
+
+  /* Manage items — more spacious */
+  .manage-item {
+    padding: var(--space-4) var(--space-6);
+  }
+
+  .manage-item__name {
+    font-size: 1.067rem;
+  }
+}
+

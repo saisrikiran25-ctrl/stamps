@@ -62,52 +62,58 @@ export function renderDashboard(container) {
   const score30d = getOverallDailyScore(habits, allEntries, 30);
 
   container.innerHTML = `
-    <!-- Dashboard Header Strip -->
-    <header class="dash-header${allDoneNow ? ' dash-header--all-done' : ''}" id="dash-header" aria-label="Dashboard header">
-      <div class="dash-header__left" aria-label="App name">MICRO</div>
+    <div style="display: flex; flex-direction: column; height: 100%;">
+      <!-- Dashboard Header Strip -->
+      <header class="dash-header${allDoneNow ? ' dash-header--all-done' : ''}" id="dash-header" aria-label="Dashboard header">
+        <div class="dash-header__left" aria-label="App name">MICRO</div>
 
-      <div class="dash-header__center">
-        <span class="dash-header__date">${esc(dateStr)}</span>
-        <span class="dash-header__daycount" aria-label="Day ${dayNumber} of tracking">Day ${dayNumber}</span>
-      </div>
+        <div class="dash-header__center">
+          <span class="dash-header__date">${esc(dateStr)}</span>
+          <span class="dash-header__daycount" aria-label="Day ${dayNumber} of tracking">Day ${dayNumber}</span>
+        </div>
 
-      <div class="dash-header__right" aria-label="Last 7 days all-habits completion">
-        ${allDone7.map((filled, i) => `
-          <div
-            class="streak-dot ${filled ? 'streak-dot--filled' : 'streak-dot--empty'}"
-            aria-label="${filled ? 'All habits done' : 'Not all habits done'} ${7 - i} day${7 - i === 1 ? '' : 's'} ago"
-          ></div>
-        `).join('')}
-      </div>
-    </header>
+        <div class="dash-header__right" aria-label="Last 7 days all-habits completion">
+          ${allDone7.map((filled, i) => `
+            <div
+              class="streak-dot ${filled ? 'streak-dot--filled' : 'streak-dot--empty'}"
+              aria-label="${filled ? 'All habits done' : 'Not all habits done'} ${7 - i} day${7 - i === 1 ? '' : 's'} ago"
+            ></div>
+          `).join('')}
+        </div>
+      </header>
 
-    <!-- All-Done Celebration Banner -->
-    <div
-      class="all-done-banner${allDoneNow ? ' visible' : ''}"
-      id="all-done-banner"
-      aria-live="polite"
-      aria-label="All habits complete for today"
-    >All done for today.</div>
+      <!-- All-Done Celebration Banner -->
+      <div
+        class="all-done-banner${allDoneNow ? ' visible' : ''}"
+        id="all-done-banner"
+        aria-live="polite"
+        aria-label="All habits complete for today"
+      >All done for today.</div>
 
-    <!-- Habit Cards -->
-    <main id="habit-cards-container" aria-label="Your habits">
-      ${habits.map(habit => _renderHabitCard(habit, allEntries, today)).join('')}
-    </main>
+      <!-- Habit Cards — flex:1 so they fill the vertical space between header and footer -->
+      <main
+        id="habit-cards-container"
+        aria-label="Your habits"
+        style="flex: 1; display: flex; flex-direction: column; gap: var(--space-4); min-height: 0;"
+      >
+        ${habits.map(habit => _renderHabitCard(habit, allEntries, today)).join('')}
+      </main>
 
-    <!-- Footer Stats Bar -->
-    <footer
-      class="stats-bar"
-      id="stats-bar"
-      role="status"
-      aria-label="Today's progress and averages"
-      style="margin-top: var(--space-5);"
-    >
-      ${renderStatItem('today', `${doneCount}/${habits.length} done`, doneCount === habits.length ? 'color-good' : doneCount > 0 ? 'color-warn' : 'color-muted')}
-      <span class="stats-bar__sep" aria-hidden="true">·</span>
-      ${renderStatItem('7d avg', fmtPct(score7d), rateColorClass(score7d))}
-      <span class="stats-bar__sep" aria-hidden="true">·</span>
-      ${renderStatItem('30d avg', fmtPct(score30d), rateColorClass(score30d))}
-    </footer>
+      <!-- Footer Stats Bar -->
+      <footer
+        class="stats-bar"
+        id="stats-bar"
+        role="status"
+        aria-label="Today's progress and averages"
+        style="margin-top: var(--space-4); flex-shrink: 0;"
+      >
+        ${renderStatItem('today', `${doneCount}/${habits.length} done`, doneCount === habits.length ? 'color-good' : doneCount > 0 ? 'color-warn' : 'color-muted')}
+        <span class="stats-bar__sep" aria-hidden="true">·</span>
+        ${renderStatItem('7d avg', fmtPct(score7d), rateColorClass(score7d))}
+        <span class="stats-bar__sep" aria-hidden="true">·</span>
+        ${renderStatItem('30d avg', fmtPct(score30d), rateColorClass(score30d))}
+      </footer>
+    </div>
   `;
 
   // Stagger cards

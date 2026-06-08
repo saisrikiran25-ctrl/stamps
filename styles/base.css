@@ -137,16 +137,29 @@ input  { border: none; outline: none; background: none; }
 #app-shell {
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
+  height: 100dvh;       /* fill exactly the viewport */
+  overflow: hidden;     /* nav + app together, no body scroll on dashboard */
 }
 
 /* ── Main Content Area ──────────────────────────────────────── */
 #app {
   flex: 1;
   width: 100%;
-  max-width: 720px;
-  margin: 0 auto;
-  padding: var(--space-6) var(--space-6) var(--space-6);
+  max-width: 100%;      /* no horizontal constraint — fill the screen */
+  margin: 0;
+  padding: var(--space-6) var(--space-10); /* generous side breathing room */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;     /* scroll only inside #app when content is taller */
+  overflow-x: hidden;
+}
+
+/* On very wide monitors, cap at 1600px and re-center */
+@media (min-width: 1600px) {
+  #app {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
 }
 
 /* ── Utility: Screen Reader Only ────────────────────────────── */
@@ -180,8 +193,13 @@ input  { border: none; outline: none; background: none; }
 .color-primary { color: var(--text-primary); }
 
 /* ── Responsive Padding ─────────────────────────────────────── */
-@media (max-width: 480px) {
+@media (max-width: 640px) {
+  #app-shell {
+    height: auto;         /* mobile: natural scroll */
+    overflow: visible;
+  }
   #app {
+    overflow-y: visible;
     padding: var(--space-4) var(--space-4) var(--space-4);
   }
 }
