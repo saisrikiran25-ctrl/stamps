@@ -968,20 +968,9 @@
 .streak-dot--filled   { background-color: var(--accent-primary); }
 .streak-dot--empty    { background-color: var(--bg-border); }
 
-/* Pulsing border when all done */
+/* Pulsing border when all done — border-color is animated by glowPulse in animations.css */
 .dash-header--all-done {
-  border-color: transparent;
   position: relative;
-}
-
-.dash-header--all-done::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--accent-primary);
-  opacity: 0.5;
-  pointer-events: none;
 }
 
 /* ── Onboarding Specific ─────────────────────────────────────── */
